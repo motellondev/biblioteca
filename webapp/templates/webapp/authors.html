@@ -1,0 +1,78 @@
+{% extends "webapp/base.html" %}
+{% load static %}
+
+{% block title %}
+    <title>BiblioMoteka - Autores</title>
+{% endblock %}
+
+
+{% block navbar %}
+<a class="nav-link" href="{% url 'webapp:homepage' %}">Inicio</a>
+<a class="nav-link" href="{% url 'webapp:categories' %}">Categorías</a>
+<a class="nav-link active text-warning" aria-current="page" href="{% url 'webapp:authors' %}">Autores</a>
+<a class="nav-link" href="{% url 'webapp:books' %}">Libros</a>
+{% endblock %}
+
+{% block content %}
+
+<!-- Searchbox -->
+<div class="row justify-content-md-center p-3">
+  <div class="col-6">
+    <div class="card text-center border-warning border-2">
+      <div class="card-body text-bg-dark text-light">
+        <input class="form-control" id="searchAuthor" aria-label="Search" placeholder="Búsqueda" data-url="{% url 'webapp:authors' %}"
+          {% if search_author %}
+            value="{{ search_author }}"
+          {% endif %}
+        ></input>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Authors -->
+<div class="row row-cols-4 g-3 justify-content-md-center text-center" >
+  {% for author in authors %}
+  <div class="col">
+    <div class="card text-bg-dark border-warning border-2 h-100">
+      <div class="card-body">
+        <span class="card-title">{{author.name}}</span>
+      </div>
+      <a class="btn btn-warning rounded-0" href="{% url 'webapp:author_books' %}?author_name={{author.name}}">Ver libros
+        <div class="card-link"></div>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+<!-- Pagination-->
+<nav aria-label="Pagination">
+    <ul class="pagination justify-content-center p-3">
+      {% if authors.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ authors.previous_page_number }}">&laquo;</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ authors.previous_page_number }}">{{ authors.previous_page_number }}</a></li>
+      {% else %}
+      <li class="page-item disabled"><a class="page-link" href="#!">&laquo;</a></li>
+      {% endif %}
+        
+      <li class="page-item disabled"><a class="page-link"href="#">{{ authors.number }}</a></li>
+
+      {% if authors.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ authors.next_page_number }}">{{ authors.next_page_number }}</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ authors.next_page_number }}">&raquo;</a></li>
+      {% else %}
+      <li class="page-item disabled"><a class="page-link" href="#!">&raquo;</a></li>
+      {% endif %}
+    </ul>
+</nav>
+{% endblock %}
+
+
+{% block links %}
+
+<!-- Scripts for this page-->
+<script language="JavaScript" type="text/javascript" src="{% static 'webapp/search_author.js' %}"></script>
+
+{% endblock %}

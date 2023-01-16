@@ -1,0 +1,60 @@
+{% extends "webapp/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    <title>BiblioMoteka - Inicio</title>
+{% endblock %}
+
+
+{% block navbar %}
+<a class="nav-link active text-warning" aria-current="page" href="{% url 'webapp:homepage' %}">Inicio</a>
+<a class="nav-link" href="{% url 'webapp:categories' %}">Categorías</a>
+<a class="nav-link" href="{% url 'webapp:authors' %}">Autores</a>
+<a class="nav-link" href="{% url 'webapp:books' %}">Libros</a>
+{% endblock %}
+
+
+{% block content %}
+<div class="row row-cols-4 g-3 justify-content-md-center text-center" >
+	{% for book in books %}
+	<div class="col">
+		<div class="card text-bg-dark border-warning border-2 h-100">
+			{% if book.file_format == 'pdf' %}
+			<div class="card-img-top p-3">
+				<a href="{{ book.file }}" target="_blank"> <img src="{{book.image}}" width=150 height="200"> </a>
+			</div>
+			{% else %}
+			<a class="text-decoration-none p-5" href="{{ book.file }}" target="_blank"><h6 align="center" class="card-title text-light">
+				{% if book.file_format == 'epub' %}
+					EPUB
+				{% else %}
+					DJVU
+				{% endif %}
+			</h6></a>
+			{% endif %}
+			<div class="card-body md-auto">
+				<a class="text-decoration-none" href="{{ book.file }}"target="_blank"><h6 class="card-title text-light">{{book.title}}</h6></a>
+				{% if book.image %}
+				<p class="text-secondary">{{ book.pages }} páginas</p>
+				{% endif %}
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item text-secondary text-bg-dark border-warning">
+					{% for author in book.authors.all %}
+					- <a class="link-secondary" href="{% url 'webapp:author_books' %}?author_name={{author.name}}">{{ author.name }}</a>
+					{% endfor %}
+				</li>
+				<li class="list-group-item text-secondary text-bg-dark border-warning">
+					{% for category in book.categories.all %}
+					#<a class="link-secondary" href="{% url 'webapp:category_books' %}?category_name={{category.name}}">{{ category.name }}</a>
+					{% endfor %}
+				</li>
+			</ul>
+			<a class="btn btn-warning rounded-0" href="{{ book.file }}" target="_blank">Enlace</a>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}
+

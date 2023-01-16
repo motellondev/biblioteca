@@ -1,0 +1,67 @@
+{% extends "webapp/base.html" %}
+{% load static %}
+
+{% block title %}
+    <title>Biblioteca - Libros</title>
+{% endblock %}
+
+
+{% block navbar %}
+<a class="nav-link" href="{% url 'webapp:homepage' %}">Inicio</a>
+<a class="nav-link" href="{% url 'webapp:categories' %}">Categorías</a>
+<a class="nav-link" href="{% url 'webapp:authors' %}">Autores</a>
+<a class="nav-link active text-warning" aria-current="page" href="{% url 'webapp:books' %}">Libros</a>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="card justify-content-md-center border-warning border-3">
+  <div class="card-body" >
+    <select class="form-select border-warning" id="filterBooks" aria-label="Filter" multiple placeholder="Categorías" data-style="warning">
+      {% for cat in categories %}
+        <option value="{{cat}}">{{cat}}</option>
+      {% endfor %}
+    </select>
+    <input class="form-control" id="searchBooks" aria-label="Search" placeholder="Búsqueda"></input>
+  </div>
+  <div class="table-responsive m-2">
+    <input id="dataURL" type="hidden" value="{% url 'webapp:books_table' %}" style="display: none;"></input>
+    <table class="table table-bordered table-striped" id="dataTableBooks">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Autores</th>
+          <th>Categorías</th>
+          <th>Páginas</th>
+          <th>Formato</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Título</th>
+          <th>Autores</th>
+          <th>Categorías</th>
+          <th>Páginas</th>
+          <th>Formato</th>
+        </tr>
+      </tfoot>
+      <tbody >
+
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block links %}
+
+<!-- Scripts for this page-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+<script language="JavaScript" type="text/javascript" src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="{% static 'webapp/books_datatable.js' %}"></script>
+
+{% endblock %}
